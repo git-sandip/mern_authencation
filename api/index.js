@@ -7,7 +7,8 @@ import cors from "cors";
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  // .connect(process.env.MONGO_URL)
+  .connect("mongodb://127.0.0.1:27017/mern_auth")
   .then(() => {
     console.log("Database Connected SucessFully! 🥳");
   })

@@ -28,6 +28,7 @@ const SignUp = () => {
         return;
       }
       seterror(false);
+      setloading(false);
     } catch (error) {
       setloading(true);
       seterror(true);

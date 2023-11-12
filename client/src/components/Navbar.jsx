@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="bg-slate-300">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -15,10 +17,15 @@ const Navbar = () => {
             <li>About</li>
           </Link>
           <Link to="/login">
-            <li>Login</li>
-          </Link>
-          <Link to="/register">
-            <li>Register</li>
+            {currentUser ? (
+              <img
+                src={currentUser.profilePicture}
+                className="h-7 w-7 rounded-full object-cover"
+                alt="Profile Pic"
+              />
+            ) : (
+              <li>Login</li>
+            )}
           </Link>
         </ul>
       </div>

@@ -33,7 +33,7 @@ export const login = async (req, res, next) => {
       },
       process.env.JWT_SECRET
     );
-    const { password: hashedPassword, ...user } = validUser._doc;
+    const { password: hashedPassword, ...rest } = validUser._doc;
     const expiryDate = new Date(Date.now() + 3600000);
     res
       .cookie("acess_token", token, {
@@ -43,7 +43,7 @@ export const login = async (req, res, next) => {
         expires: expiryDate,
       })
       .status(200)
-      .json(password);
+      .json(rest);
   } catch (error) {
     next(error);
   }

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setformData] = useState({});
   const [error, seterror] = useState(false);
   const [loading, setloading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setformData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -21,7 +22,6 @@ const SignUp = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
 
       if (data.success == false) {
         seterror(true);
@@ -29,6 +29,7 @@ const SignUp = () => {
       }
       seterror(false);
       setloading(false);
+      navigate("/");
     } catch (error) {
       setloading(true);
       seterror(true);

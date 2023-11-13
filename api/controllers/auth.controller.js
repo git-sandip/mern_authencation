@@ -36,7 +36,7 @@ export const login = async (req, res, next) => {
     const { password: hashedPassword, ...rest } = validUser._doc;
     const expiryDate = new Date(Date.now() + 3600000);
     res
-      .cookie("acess_token", token, {
+      .cookie("access_token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",

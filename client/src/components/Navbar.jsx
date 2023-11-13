@@ -16,17 +16,19 @@ const Navbar = () => {
           <Link to="/about">
             <li>About</li>
           </Link>
-          <Link to="/login">
-            {currentUser ? (
+          {currentUser ? (
+            <Link to="/profile">
               <img
                 src={currentUser.profilePicture}
                 className="h-7 w-7 rounded-full object-cover"
                 alt="Profile Pic"
               />
-            ) : (
-              <li>Login</li>
-            )}
-          </Link>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <li>Login</li>{" "}
+            </Link>
+          )}
         </ul>
       </div>
     </div>

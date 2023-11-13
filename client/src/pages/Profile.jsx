@@ -10,6 +10,9 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import {
+  deleteUserFaliure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateUserFaliure,
   updateUserStart,
   updateUserSuccess,
@@ -75,6 +78,21 @@ const Profile = () => {
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFaliure(error));
+    }
+  };
+  const handleDelete = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "Delete",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFaliure(data));
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFaliure(error));
     }
   };
   return (
@@ -147,7 +165,9 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span onClick={handleDelete} className="text-red-700 cursor-pointer">
+          Delete Account
+        </span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
 

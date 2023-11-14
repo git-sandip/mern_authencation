@@ -5,11 +5,12 @@ import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 dotenv.config();
 
 mongoose
-  // .connect(process.env.MONGO_URL)
-  .connect("mongodb://127.0.0.1:27017/mern_auth")
+  .connect(process.env.MONGO_URL)
+  // .connect("mongodb://127.0.0.1:27017/mern_auth")
   .then(() => {
     console.log("Database Connected SucessFully! 🥳");
   })
@@ -23,7 +24,12 @@ const corsOptions = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
 };
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/client/dist")));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 app.use(cors(corsOptions));
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

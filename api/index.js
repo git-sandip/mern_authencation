@@ -20,10 +20,7 @@ mongoose
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-};
+
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/client/dist")));
 

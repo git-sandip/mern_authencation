@@ -13,6 +13,7 @@ import {
   deleteUserFaliure,
   deleteUserStart,
   deleteUserSuccess,
+  signout,
   updateUserFaliure,
   updateUserStart,
   updateUserSuccess,
@@ -62,13 +63,17 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/user/update/${currentUser._id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFaliure(data));
@@ -83,9 +88,13 @@ const Profile = () => {
   const handleDelete = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "Delete",
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/user/delete/${currentUser._id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       const data = res.json();
       if (data.success === false) {
         dispatch(deleteUserFaliure(data));
@@ -93,6 +102,14 @@ const Profile = () => {
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFaliure(error));
+    }
+  };
+  const handleSignout = async () => {
+    try {
+      await fetch("api/auth/signout");
+      dispatch(signout());
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -168,7 +185,9 @@ const Profile = () => {
         <span onClick={handleDelete} className="text-red-700 cursor-pointer">
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignout} className="text-red-700 cursor-pointer">
+          Sign Out
+        </span>
       </div>
 
       <div className="text-red-700 mt-5">{error && "Somthing went wrong"}</div>

@@ -19,7 +19,12 @@ mongoose
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use("*", cors());
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`🚀Server started on port: ${PORT}`);

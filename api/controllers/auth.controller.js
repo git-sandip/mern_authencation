@@ -33,14 +33,16 @@ export const login = async (req, res, next) => {
       },
       process.env.JWT_SECRET
     );
+
     const { password: hashedPassword, ...rest } = validUser._doc;
     const expiryDate = new Date(Date.now() + 3600000);
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
+
+      .cookie("token", token, {
         expires: expiryDate,
+        httpOnly: true,
+        secure: false,
+        "Access-Control-Allow-Credentials": "true",
       })
       .status(200)
       .json(rest);
@@ -64,11 +66,11 @@ export const google = async (req, res, next) => {
       const { password: hashedPassword, ...rest } = user._doc;
       const expiryDate = new Date(Date.now() + 3600000);
       res
-        .cookie("acess_token", token, {
+        .cookie("token", token, {
           httpOnly: true,
-          secure: true,
-          sameSite: "strict",
+          secure: false,
           expires: expiryDate,
+          "Access-Control-Allow-Credentials": "true",
         })
         .status(200)
         .json(rest);
@@ -93,11 +95,12 @@ export const google = async (req, res, next) => {
       const { password: hashedPassword1, ...rest } = newUser._doc;
       const expiryDate = new Date(Date.now() + 3600000);
       res
-        .cookie("acess_token", token, {
+        // .cookie("access_token", token, {
+        .cookie("token", token, {
           httpOnly: true,
-          secure: true,
-          sameSite: "strict",
+          secure: false,
           expires: expiryDate,
+          "Access-Control-Allow-Credentials": "true",
         })
         .status(200)
         .json(rest);
@@ -105,4 +108,8 @@ export const google = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const signout = (req, res) => {
+  res.clearCookie("token").status(200).json("Signout Sucess!!");
 };
